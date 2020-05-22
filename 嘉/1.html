@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设计模式</title>
+    <style>
+        .zheZhao{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(0,0,0,.3);
+        }
+    </style>
+</head>
+<body>
+<button id="btnZhe">弹出遮罩</button>
+<script src="1.js"></script>
+<script>
+//    单例模式
+    document.getElementById("btnZhe").onclick=function () {
+        addzheZhao();
+    };
+//简单工厂模式
+    function xhrFn() {
+        var xhr;
+        if(window.XMLHttpRequest){
+             xhr= new XMLHttpRequest();
+        }else {
+            xhr=new ActiveXObject("microsoft.XMLHTTP");
+        }
+        return xhr;
+    }
+    function ajax() {
+        var xhr=xhrFn();
+    }
+//工厂模式
+
+</script>
+</body>
+</html>
