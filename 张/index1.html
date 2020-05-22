@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #Sec{
+            width: 200px;
+            position: absolute;
+            left: 250px;
+            top: 10px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<textarea name="txtEmail" id="txtEmail" cols="30" rows="10"></textarea>
+<br>
+<input type="text" name="txtSearch" id="txtSearch">
+<button id="Btn">搜索</button>
+<div id="Sec"></div>
+<script>
+    $("Btn").onclick=function () {
+        var emailArr=$("txtEmail").value.split("\n");
+        var Sec=$("txtSearch").value;
+        var result=check(emailArr,Sec);
+        $("Sec").innerHTML=result.join("\n");
+    };
+
+
+    function $(id) {
+        return document.getElementById(id)
+    }
+</script>
+</body>
+</html>
