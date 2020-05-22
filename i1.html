@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <!--1-->
+    <span v-text="message" v-show="ok"></span>
+    <span v-if="ook">{{message}}</span>
+    <!--2-->
+    <span v-html="message" ></span>
+    <div v-if="oook>=90 && oook<=100">A</div>
+    <div v-else-if="oook>=80 && oook<90">B</div>
+    <div v-else-if="oook>=70 && oook<80">C</div>
+    <div v-else-if="oook>=60 && oook<70">D</div>
+    <div v-else>E</div>
+    <!--3-->
+    <ul>
+        <li v-for="(v,n,z) in studentList[0]" :key="z">
+            {{v}},{{n}},{{z}}
+        </li>
+    </ul>
+    <!--3-->
+    <div :class="[ooook,{yes:is}]"></div>
+    <!--4-->
+    <input type="text"  placeholder="用户名" v-model="username">
+    {{username }}
+    <!--5-->
+    <button @click="test($event)">按钮</button>
+    <!--6-->
+    <div>
+        大
+        <div >
+            中
+            <div>
+                小
+            </div>
+        </div>
+    </div>
+    <!--7-->
+    <input @keyup.enter="onEnter">
+    <!--8-->
+    {{message | upCase}}
+    <!--9-->
+    <p>{{data | toData}}</p>
+</div>
+<script src="js/vue.js"></script>
+<script>
+    Vue.filter("toData",function (value) {
+        var date;
+        if(typeof value == "string"){
+            date = new Date(value)
+        }else {
+            date = value
+        }
+        return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+    });
+    var vm= new Vue({
+        el:"#app",
+        data:{
+            message:"<h1>hello vue</h1>",
+            ok:false,
+            ook:false,
+            oook:90,
+            studentList:[{name:"张三",age:18},{name:"张三",age:19},{name:"张三",age:20}],
+            ooook:"red",
+//            oooook:"green",
+            is:true,
+            username:"",
+            data:new Date()
+        },
+        methods:{
+            test(){
+                console.log("小")
+            },
+            test1(){
+                console.log("中")
+            },
+            test2(){
+                console.log("大")
+            },
+            onEnter(){
+                console.log("999")
+            }
+        },
+        filters:{
+            upCase:function (value) {
+                return value.toUpperCase();
+            }
+        }
+    })
+</script>
+</body>
+</html>

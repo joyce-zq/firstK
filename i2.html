@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        tbody:empty:after{
+            content:"没有了"
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    搜索：<input type="text" v-model="sec"><br>
+    用户名：<input type="text"  placeholder="用户名" v-model="userName">
+    年龄：<input type="text"  placeholder="用户名" v-model="userAge">
+    <button @click="add">添加</button>
+    <table>
+        <thead>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>操作</th>
+        </thead>
+        <tbody>
+        <tr v-for="(i,z) in getuserListSec">
+            <td>{{i.name}}</td>
+            <td>{{i.age}}</td>
+            <td><button>修改</button><button @click="del(z)">删除</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="js/vue.js"></script>
+<script>
+    var vm= new Vue({
+        el:"#app",
+        data:{
+            userList:[
+                {name:"张三",age:"18"},{name:"李四",age:"19"},{name:"王五",age:"20"},{name:"张五",age:"20"}
+            ],
+            sec:"",
+            userName:"",
+            userAge:""
+        },
+        methods:{
+            del(z){
+                this.userList.splice(z,1)
+            },
+            add(){
+             var name=this.$data.userName;
+             var age=this.$data.userAge;
+             var num=this.$data.userList.length;
+             Vue.set(this.userList,num,{name:name,age:age})
+            }
+        },
+        computed:{
+            getuserListSec(){
+                var sec=this.$data.sec;
+                var arr=[];
+                for(var i=0;i<this.userList.length;i++){
+                    if(this.userList[i].name.indexOf(sec)>=0){
+                        arr.push(this.userList[i])
+                    }
+                }
+                return arr;
+            }
+        }
+    })
+</script>
+</body>
+</html>
