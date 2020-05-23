@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #CharMessage{
+            color: white;
+            border: 1px solid black;
+            height: 500px;
+            width: 300px;
+            overflow-y: scroll;
+        }
+        #CharMessage{
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div id="login">
+    <p>登 录</p>
+    <p><input type="text" name="txtName" id="txtName" placeholder="请输入用户名"/></p>
+    <button onclick="funlogin()">登录</button>
+</div>
+<div id="chart" style="display: none;">
+    <div id="CharMessage"></div>
+    <input type="text" name="txtMessage" id="txtMessage" placeholder="请输入发送的消息"/>
+    <button onclick="sendMessage()">发送</button>
+    <button onclick="logout()">注销</button>
+</div>
+<script type="text/javascript">
+    var socket=new WebSocket('ws://172.16.8.29:8888');
+    var dMessage;
+    var username;
+    var login = document.getElementById("login");
+    var chart = document.getElementById("chart");
+    var spanNum = document.getElementById("spanNum");
+    window.onload = function(){
+        dMessage = document.getElementById("CharMessage");
+
+        // 打开Socket
+        socket.onopen = function(event) {
+            console.log("socket 已经打开");
+            // 发送一个初始化消息
+//           socket.send('I am the client and I\'m listening!');
+
+            // 监听消息
+            socket.onmessage = function(event) {
+                console.log('Client received a message',event);
+                var jsonobj = JSON.parse(event.data);
+                dMessage.innerHTML="<p> <b>"+jsonobj.name+"说：</b>  "+jsonobj.message+"</br><div style='text-align: right'>"+(new Date()).toLocaleTimeString()+"  </div></p>"+ dMessage.innerHTML; // 加载服务器发送过来的留言
+                spanNum.innerHTML=jsonobj.online+" 人";
+            };
+
+            // 监听Socket的关闭
+            socket.onclose = function(event) {
+                console.log('Client notified socket has closed',event);
+            };
+
+            // 关闭Socket....
+            //socket.close()
+        };
+        checkLogin();
+    };
+    //判断是否登录
+    function checkLogin(){
+        if(localStorage.getItem("username")==null||localStorage.getItem("username")==undefined){
+            login.style.display="block";
+            chart.style.display="none";
+
+        }else{
+            login.style.display="none";
+            chart.style.display="block";
+
+            username =localStorage.getItem("username");
+        }
+    }
+    function sendMessage(){
+
+        var message = document.getElementById("txtMessage").value;
+        var jsonobj = {name:username,message:message,online:""};
+        socket.send(JSON.stringify(jsonobj)); //发送信息到服务器
+        document.getElementById("txtMessage").value="";
+    }
+    function socketClose(){
+        socket.close();
+
+    }
+    function funlogin(){
+        var name = document.getElementById("txtName").value;
+        localStorage.setItem("username",name);
+        checkLogin();
+    }
+    function logout(){
+        localStorage.removeItem("username");
+        checkLogin();
+    }
+</script>
+</body>
+</html>
